@@ -22,7 +22,18 @@ const middleware = [
   cookieParser()
 ]
 
+const { stat, readFile } = require("fs").promises
+
 middleware.forEach((it) => server.use(it))
+
+
+server.get('/api/v1/tasks', async (req, res) => {
+  const Read = await readFile(`${__dirname}/tasks.json`, "utf8").then((text) => text).catch((err) => console.log(err))
+  const Stat = await stat(`${__dirname}/tasks.json`)
+  .then(() => Read)
+  .catch((err) => console.log(err))
+  res.json(JSON.parse(Stat))
+})
 
 server.get('/', (req, res) => {
   res.send(`
