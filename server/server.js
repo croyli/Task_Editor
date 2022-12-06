@@ -11,7 +11,7 @@ require('colors')
 
 let connections = []
 
-const port = process.env.PORT || 8090
+const port = process.env.PORT || 2112
 const server = express()
 
 const middleware = [
@@ -27,11 +27,16 @@ const { stat, readFile } = require("fs").promises
 middleware.forEach((it) => server.use(it))
 
 
-server.get('/api/v1/tasks', async (req, res) => {
-  const Read = await readFile(`${__dirname}/tasks.json`, "utf8").then((text) => text).catch((err) => console.log(err))
+
+
+server.get('/api/v1/tasks/:category', async (req, res) => {
+  const { category } = req.params
+  const Read = await readFile(`${__dirname}/tasks/${category}.json`, 'utf8')
+    .then((text) => text)
+    .catch((err) => console.log(err))
   const Stat = await stat(`${__dirname}/tasks.json`)
-  .then(() => Read)
-  .catch((err) => console.log(err))
+    .then(() => Read)
+    .catch((err) => console.log(err))
   res.json(JSON.parse(Stat))
 })
 
