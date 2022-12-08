@@ -37,8 +37,9 @@ server.get('/api/v1/tasks/:category', async (req, res) => {
   const Stat = await stat(`${__dirname}/tasks.json`)
     .then(() => Read)
     .catch((err) => console.log(err))
-  res.json(JSON.parse(Stat))
+  res.json((Stat))
 })
+
 
 server.get('/', (req, res) => {
   res.send(`
@@ -80,3 +81,17 @@ if (config.isSocketsEnabled) {
   echo.installHandlers(app, { prefix: '/ws' })
 }
 console.log(`Serving at http://localhost:${port}`)
+
+
+
+
+// [
+//   {
+//     taskId: '2WEKaVNO',
+//     title: 'Task',
+//     _isDeleted: false,
+//     _createdAt: 14135235,
+//     _deletedAt: 14135235,
+//     status: 'done'
+//   }
+// ]
